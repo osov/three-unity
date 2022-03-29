@@ -1,0 +1,21 @@
+{
+  "name": "three-unity",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+    "dependencies": {
+    "@tweenjs/tween.js": "^18.6.4",
+    "ecs-unity": "file:../ecs-unity",
+    "three": "^0.139.0",
+    "troika-three-text": "^0.44.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.139.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
