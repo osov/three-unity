@@ -2,7 +2,7 @@ import { EventBus } from "ecs-unity";
 import { PointerEventData } from "ecs-unity/src/unityTypes/Input";
 import { MeshBasicMaterial } from "three";
 import { MasterPool } from "../pool/MasterPool";
-import { Text } from "../entitysUnity/Text";
+import { Text, U_Text } from "../entitysUnity/Text";
 import { Image, U_Image } from "./Image";
 
 export type ButtonCallback = () => void;
@@ -10,7 +10,7 @@ export type ButtonCallback = () => void;
 export class Button extends U_Image {
     protected className = 'Button';
     private curText: string;
-    private textBlock: Text;
+    private textBlock: U_Text;
     private onClickEvent: ButtonCallback;
 
     constructor(mat: MeshBasicMaterial, _text: string) {
@@ -18,8 +18,8 @@ export class Button extends U_Image {
         this.material = mat;
         this.curText = _text;
 
-        var text = new Text(_text, 30);
-        text.GetComponent<Image>().color = '#fafafa';
+        var text = new U_Text(_text, 30);
+        text.GetComponent<Text>()!.color = '#fafafa';
         text.setPositionZ(0.001);
         text.setPositionXY(0, 0.1);
         this.add(text);

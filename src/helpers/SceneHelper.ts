@@ -20,17 +20,10 @@ export class SceneHelper extends BaseHelper {
         if (nameParent != '') {
             if (nameParent == 'sceneOrtho')
                 parent = GameSystem.instance.sceneOrtho;
-            else {
-                var scene = GameSystem.instance.scene;
-                for (let i = 0; i < scene.children.length; i++) {
-                    const it = scene.children[i];
-                    if (it.name == nameParent) {
-                        parent = it;
-                        break;
-                    }
-
-                }
-            }
+            else
+                parent = this.getGameObjectByName(nameParent);
+            if (parent == null)
+                console.warn("addToScene parent не найден:", nameParent);
         }
 
         EntitysSystem.instance.addEntity(entity, entity.getPosition(), 0, false, parent);

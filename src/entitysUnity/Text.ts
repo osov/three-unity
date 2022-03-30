@@ -1,9 +1,15 @@
-import { Vector2 } from 'three';
 import { BaseMesh } from '../entitys/BaseMesh';
 import { ResourceSystem } from '../systems/ResourceSystem';
 const TroikaText = require('troika-three-text');
 
-export class Text extends BaseMesh{
+export interface Text {
+	get text():string;
+	set text(value:string);
+	set color(val:string);
+}
+
+
+export class U_Text extends BaseMesh{
 
 	protected className = 'Text';
 	protected isMesh = false;
@@ -36,13 +42,13 @@ export class Text extends BaseMesh{
 		this.mesh.text = value;
 	}
 
-	// protected set sizeDelta(val:Vector2){
-	// 	this._sizeDelta = val;
-	// }
-
 	private hexToVbColor(rrggbb:string) {
 		var bbggrr = rrggbb.substring(1);
 		return parseInt(bbggrr, 16);
+	}
+
+	protected set color(value: string) {
+		this.setColor(value);
 	}
 
 	protected setColor(color:string, alpha = 1)
@@ -59,7 +65,7 @@ export class Text extends BaseMesh{
 
 	makeInstance()
 	{
-		var copy = new Text(this.mesh.text,  this.mesh.fontSize);
+		var copy = new U_Text(this.mesh.text,  this.mesh.fontSize);
 		copy.setColor(this.curColor);
 		this.makeChildsInstance(copy);
 		return copy;
