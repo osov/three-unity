@@ -2,13 +2,15 @@ import { Entity } from 'src/main';
 import { MeshBasicMaterial, Texture, Vector2 } from 'three';
 import { U_RectTransform } from './RectTransform';
 import { MasterPool } from '../pool/MasterPool';
+import * as TWEEN from '@tweenjs/tween.js';
 
 export interface ImageSet {
 	SetImageIndex(index: number): void;
 }
 
 export interface Image {
-	set color(val:string);
+	set color(val: string);
+	DOFade(value: number, sec: number): void;
 }
 
 export class U_Image extends U_RectTransform {
@@ -21,6 +23,14 @@ export class U_Image extends U_RectTransform {
 
 	protected set color(value: string) {
 		this.setColor(value);
+	}
+
+	DOFade(value: number, time: number) {
+		var mat = this.material;
+		var prop = {opacity:value};
+		new TWEEN.Tween(mat)
+			.to(prop, time * 1000)
+			.start()
 	}
 
 	addImageList(map: Texture) {
