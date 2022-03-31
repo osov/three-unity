@@ -13,7 +13,7 @@ export interface InitParams {
 }
 
 export class RenderSystem extends BaseSystem {
-	public static instance:RenderSystem;
+	public static instance: RenderSystem;
 	public readonly scene: Scene;
 	public readonly sceneOrtho: Scene;
 	public readonly camera: Camera;
@@ -66,7 +66,7 @@ export class RenderSystem extends BaseSystem {
 		this.resourceSystem = new ResourceSystem();
 		this.entitysSystem = new EntitysSystem();
 
-		
+
 		EventBus.subscribeEvent('onResize', this.onResize.bind(this));
 	}
 
@@ -82,7 +82,7 @@ export class RenderSystem extends BaseSystem {
 		await this.resourceSystem.init(fontUrl);
 	}
 
-	public doResize(){
+	public doResize() {
 		this.onResize();
 	}
 
@@ -132,10 +132,19 @@ export class RenderSystem extends BaseSystem {
 					ty = - height * 0.5;
 				if (align.y == 1)
 					ty = height * 0.5;
-				m.setPositionXY(m.screenPositon.x, m.screenPositon.y);
+				//	m.setPositionXY(m.screenPositon.x, m.screenPositon.y);
 			}
 
 		}
+	}
+
+	setQuality(value: number) {
+		var width = this.container.clientWidth;
+		var height = this.container.clientHeight;
+		var perc = value / 100;
+		this.renderer.setSize(width * perc, height * perc);
+		this.renderer.domElement.style.width = width + 'px';
+		this.renderer.domElement.style.height = height + 'px';
 	}
 
 	public addUi(mesh: Object3D) {
@@ -147,7 +156,7 @@ export class RenderSystem extends BaseSystem {
 	// ----------------------------------------------------------------------------------------------------------
 	// Methods
 	// ----------------------------------------------------------------------------------------------------------
-	
+
 	async preloadTextData(path: string, newName: string = '') {
 		return this.resourceSystem.preloadTextData(path, newName);
 	}

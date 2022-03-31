@@ -12,8 +12,8 @@ export interface TexturesData {
 }
 
 export class TextureAtlas {
-    public static instance: TextureAtlas;
-    textures: { [k: string]: Texture } = {};
+    private static instance: TextureAtlas;
+    private textures: { [k: string]: Texture } = {};
 
     constructor() {
         TextureAtlas.instance = this;

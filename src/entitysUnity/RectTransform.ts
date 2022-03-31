@@ -1,5 +1,5 @@
 import { MasterPool } from '../pool/MasterPool';
-import { Mesh, MeshBasicMaterial, PlaneBufferGeometry, Vector2, Vector3 } from 'three';
+import { Mesh, MeshBasicMaterial, Object3D, PlaneBufferGeometry, Vector2, Vector3 } from 'three';
 import { Screen } from 'ecs-unity';
 import * as TWEEN from '@tweenjs/tween.js';
 import { BaseMesh } from '../entitys/BaseMesh';
@@ -65,7 +65,7 @@ export class U_RectTransform extends BaseMesh {
 
 	setAlign(x: number, y: number) {
 		this.align.set(x, y);
-		this.setPositionXY(0, 0);
+		this.setPositionXY(this.screenPositon.x, this.screenPositon.y);
 	}
 
 	protected getPosScreen() {
@@ -80,14 +80,25 @@ export class U_RectTransform extends BaseMesh {
 			w = size.x;
 			h = size.y;
 		}
-		if (align.x == -1)
+		var curSize = this.sizeDelta;
+		if (align.x == -1) {
 			tx = - w * 0.5;
-		if (align.x == 1)
+			tx += curSize.x * 0.5;
+		}
+		if (align.x == 1) {
 			tx = w * 0.5;
-		if (align.y == -1)
+			tx -= curSize.x * 0.5;
+		}
+		if (align.y == -1) {
 			ty = - h * 0.5;
-		if (align.y == 1)
+			ty += curSize.y * 0.5;
+		}
+		if (align.y == 1) {
 			ty = h * 0.5;
+			ty -= curSize.y * 0.5;
+		}
+
+
 		return new Vector2(tx, ty);
 	}
 
@@ -107,6 +118,13 @@ export class U_RectTransform extends BaseMesh {
 		var copy = new U_RectTransform(MasterPool.isCloneMaterial ? this.material.clone() : this.material);
 		this.makeChildsInstance(copy);
 		return copy;
+	}
+
+	add(...object: Object3D[]) {
+		var ret = super.add(...object);
+		this.setAlign(this.align.x, this.align.y);
+		this.setPositionXY(this.screenPositon.x, this.screenPositon.y);
+		return ret;
 	}
 
 }
