@@ -1,15 +1,19 @@
-import { BaseMesh } from '../entitys/BaseMesh';
 import { ResourceSystem } from '../systems/ResourceSystem';
+import * as TWEEN from '@tweenjs/tween.js';
+import { U_RectTransform } from './RectTransform';
+import { MeshBasicMaterial } from 'three';
 const TroikaText = require('troika-three-text');
 
 export interface Text {
 	get text():string;
 	set text(value:string);
 	set color(val:string);
+	DOFade(value: number, sec: number): void;
 }
 
+const tmpMaterial = new MeshBasicMaterial();
 
-export class U_Text extends BaseMesh{
+export class U_Text extends U_RectTransform{
 
 	protected className = 'Text';
 	protected isMesh = false;
@@ -19,7 +23,7 @@ export class U_Text extends BaseMesh{
 
 	constructor(text:string, fontSize = 16)
 	{
-		super();
+		super(tmpMaterial);
 		var mesh = new TroikaText.Text();
 		mesh.font = ResourceSystem.instance.getLoadedFont();
 		mesh.text =  text;
@@ -40,6 +44,14 @@ export class U_Text extends BaseMesh{
 	public set text(value:string){
 		this._text = value;
 		this.mesh.text = value;
+	}
+
+	DOFade(value: number, time: number) {
+		var mat = this.mesh.material;
+		var prop = {fillOpacity:value};
+		new TWEEN.Tween(mat)
+			.to(prop, time * 1000)
+			.start()
 	}
 
 	private hexToVbColor(rrggbb:string) {
