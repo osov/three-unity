@@ -7,13 +7,7 @@ import { EntitysSystem } from "../systems/EntitysSystem";
 import { GameObject } from "ecs-unity";
 
 export class SceneHelper extends BaseHelper {
-    public static instance: SceneHelper;
     public static allMesh: GameObject[] = [];
-
-    constructor() {
-        super();
-        SceneHelper.instance = this;
-    }
 
     public static addToScene(entity: Entity, nameParent: string = '') {
         var parent = null;

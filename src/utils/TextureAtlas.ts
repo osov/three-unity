@@ -12,12 +12,9 @@ export interface TexturesData {
 }
 
 export class TextureAtlas {
-    private static instance: TextureAtlas;
-    private textures: { [k: string]: Texture } = {};
+    private static textures: { [k: string]: Texture } = {};
 
-    constructor() {
-        TextureAtlas.instance = this;
-    }
+    private constructor(){}
 
     static add(texture: Texture, allData: TexturesData){
         var image = texture.image;
@@ -29,11 +26,11 @@ export class TextureAtlas {
             t.offset.x = ((data.x) / image.width);
             t.offset.y = (data.y / image.height); // 1 - (data.h / image.height) - (data.y / image.height);
             t.needsUpdate = true;
-            this.instance.textures[name] = t;
+            this.textures[name] = t;
         }
     }
 
     static get(name: string) {
-        return this.instance.textures[name];
+        return this.textures[name];
     }
 }

@@ -165,6 +165,11 @@ export class RenderSystem extends BaseSystem {
 		return this.resourceSystem.loadTextures(path, names);
 	}
 
+	async loadSounds(path: string, names: string[]) {
+		return this.resourceSystem.loadSounds(path, names);
+	}
+	
+
 	clearScene() {
 		return this.entitysSystem.clearScene();
 	}

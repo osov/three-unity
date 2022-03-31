@@ -9,5 +9,6 @@ import { TextureAtlas, TexturesData } from './utils/TextureAtlas';
 import { RectTransform } from './entitysUnity/RectTransform';
 import { SceneHelper } from './helpers/SceneHelper';
 import { ResourceSystem } from './systems/ResourceSystem';
+import { SoundHelper } from './helpers/SoundHelper';
 
-export {SceneHelper, GameSystem, ResourceSystem, Entity, RectTransform,  Image, U_Image, Button, U_Text, Text, MasterPool, GameUtils, TextureAtlas, TexturesData, ImageSet};
+export {SceneHelper, SoundHelper, GameSystem, ResourceSystem, Entity, RectTransform,  Image, U_Image, Button, U_Text, Text, MasterPool, GameUtils, TextureAtlas, TexturesData, ImageSet};

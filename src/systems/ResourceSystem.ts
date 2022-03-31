@@ -1,15 +1,23 @@
-import { MeshBasicMaterial, TextureLoader, Texture, CanvasTexture, RepeatWrapping } from 'three';
+import { MeshBasicMaterial, TextureLoader, Texture, CanvasTexture, RepeatWrapping, AudioLoader } from 'three';
 import { BaseSystem } from './BaseSystem';
 const { preloadFont } = require('troika-three-text');
 
+interface AudioInfo {
+	name: string;
+	buffer: AudioBuffer;
+}
 
 export class ResourceSystem extends BaseSystem {
 
 	public static instance: ResourceSystem;
+	private textureloader = new TextureLoader();
+	private audioLoader = new AudioLoader();
 	public fontUrl: string = '';
 	private readonly textures: { [key: string]: Texture } = {};
+	private sounds: { [key: string]: AudioBuffer } = {};
 	private badMaterial: MeshBasicMaterial;
 	private textData: { [k: string]: string } = {};
+
 
 	constructor() {
 		super();
@@ -45,22 +53,22 @@ export class ResourceSystem extends BaseSystem {
 	}
 
 	private loadTexture(path: string): Promise<Texture> {
-		return new Promise(function (resolve, reject) {
-			var loader = new TextureLoader();
-			loader.load(
+		return new Promise((resolve, reject) => {
+			this.textureloader.load(
 				path,
 				function (texture) {
 					texture.name = path;
 					resolve(texture);
 				},
-				function (xhr) {
+				(xhr) => {
 					//this.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
 				},
-				function (xhr) {
+				(xhr) => {
 					reject(new Error(xhr + 'An error occurred loading while loading' + xhr))
 				});
 		});
 	}
+
 
 	async loadTextures(path: string, names: string[]) {
 		var promises = [];
@@ -78,6 +86,44 @@ export class ResourceSystem extends BaseSystem {
 		return this.textures;
 	}
 
+	async loadSound(name: string, path: string): Promise<AudioInfo> {
+
+		return new Promise((resolve, reject) => {
+			this.audioLoader.load(path + name,
+				(buffer) => {
+					resolve({ name, buffer });
+				},
+				(xhr) => {
+					//this.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+				},
+				(xhr) => {
+					reject(new Error(xhr + 'An error occurred loading while loading' + xhr))
+				});
+		});
+
+	}
+
+	async loadSounds(path: string, names: string[]) {
+		var promises = [];
+		for (var i = 0; i < names.length; i++)
+			promises.push(this.loadSound(names[i], path));
+		var list = await Promise.all(promises);
+
+		for (var i = list.length - 1; i >= 0; i--) {
+			var data = list[i];
+			var filename = data.name.replace(/^.*[\\\/]/, '');
+			filename = filename.substr(0, filename.length - 4);
+			data.name = filename;
+			this.sounds[filename] = data.buffer;
+		}
+		return this.sounds;
+
+	}
+
+	getSoundBuffer(name: string) {
+		return this.sounds[name];
+	}
+
 	getTexture(name: string): Texture {
 		if (!this.textures[name]) {
 			this.warn("Текстура не загружена:", name);
@@ -93,10 +139,10 @@ export class ResourceSystem extends BaseSystem {
 	async preloadTextData(path: string, newName: string = '') {
 		var r = await fetch(path);
 		var text = await r.text();
-		if (newName == ''){
+		if (newName == '') {
 			var p = path.lastIndexOf('.');
 			newName = path.substr(0, p);
-			
+
 		}
 		this.textData[newName != '' ? newName : path] = text;
 		return text;
