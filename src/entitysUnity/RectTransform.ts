@@ -18,7 +18,6 @@ export interface RectTransform {
 
 export class U_RectTransform extends BaseMesh {
 	public align: Vector2 = new Vector2(0, 0);
-	protected screenPositon: Vector2 = new Vector2();
 	protected className = 'RectTransform';
 
 	constructor(material: MeshBasicMaterial) {
@@ -40,7 +39,8 @@ export class U_RectTransform extends BaseMesh {
 	}
 
 	protected get anchoredPosition() {
-		return new Vector2(this.screenPositon.x, this.screenPositon.y);
+		var ps = this.getPosScreen();
+		return new Vector2(this.position.x - ps.x, this.position.y - ps.y);
 	}
 
 	protected set anchoredPosition(value: Vector2) {
@@ -65,7 +65,8 @@ export class U_RectTransform extends BaseMesh {
 
 	setAlign(x: number, y: number) {
 		this.align.set(x, y);
-		this.setPositionXY(this.screenPositon.x, this.screenPositon.y);
+		var ap = this.anchoredPosition;
+		this.setPositionXY(ap.x, ap.y);
 	}
 
 	protected getPosScreen() {
@@ -105,7 +106,6 @@ export class U_RectTransform extends BaseMesh {
 	setPositionXY(x: number, y: number) {
 		var ps = this.getPosScreen();
 		this.position.set(ps.x + x, ps.y + y, this.position.z);
-		this.screenPositon.set(x, y);
 	}
 
 	protected makeChildsInstance(copy: Entity) {
@@ -123,7 +123,8 @@ export class U_RectTransform extends BaseMesh {
 	add(...object: Object3D[]) {
 		var ret = super.add(...object);
 		this.setAlign(this.align.x, this.align.y);
-		this.setPositionXY(this.screenPositon.x, this.screenPositon.y);
+		var ap = this.anchoredPosition;
+		this.setPositionXY(ap.x, ap.y);
 		return ret;
 	}
 

@@ -77,7 +77,7 @@ export class SceneHelper extends BaseHelper {
     public static hideList(list: string[]) {
         for (let i = 0; i < list.length; i++) {
             var go = SceneHelper.getGameObjectByName(list[i]);
-            if (go !== undefined)
+            if (go)
                 go!.visible = false;
         }
     }
@@ -85,7 +85,7 @@ export class SceneHelper extends BaseHelper {
     public static showList(list: string[]) {
         for (let i = 0; i < list.length; i++) {
             var go = SceneHelper.getGameObjectByName(list[i]);
-            if (go !== undefined)
+            if (go)
                 go!.visible = true;
         }
     }
