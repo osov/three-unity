@@ -10,6 +10,10 @@ export interface InitParams {
 	isPerspective?: boolean;
 	container?: HTMLElement | null;
 	fontUrl?: string;
+	worldWrap?: boolean;
+	worldSize?: Vector2;
+	viewDistance?: number;
+	cameraSpeed?: number;
 }
 
 export class RenderSystem extends BaseSystem {
@@ -168,7 +172,7 @@ export class RenderSystem extends BaseSystem {
 	async loadSounds(path: string, names: string[]) {
 		return this.resourceSystem.loadSounds(path, names);
 	}
-	
+
 
 	clearScene() {
 		return this.entitysSystem.clearScene();

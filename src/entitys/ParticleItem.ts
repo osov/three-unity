@@ -1,34 +1,30 @@
-import {Vector2, Vector3, Object3D} from 'three';
-import {Entity} from '../entitys/Entity';
+import { Vector2, Vector3, Object3D } from 'three';
+import { Entity } from '../entitys/Entity';
 import { deepPosition } from '../utils/gameUtils';
-import {ParticlesStack} from './ParticlesStack';
+import { ParticlesStack } from './ParticlesStack';
 
 
 
-export class ParticleItem extends Entity{
+export class ParticleItem extends Entity {
 
-	private stack:ParticlesStack;
-	private idParticle:number = -1;
+	private stack: ParticlesStack;
+	private idParticle: number = -1;
 
-	constructor(stack:ParticlesStack)
-	{
+	constructor(stack: ParticlesStack) {
 		super();
 		this.stack = stack;
 	}
 
 	// частицу незачем добавлять на сцену, т.к. рассчеты идут все равно пулом 
-	addToParent(parent:Object3D)
-	{
+	addToParent(parent: Object3D) {
 	}
 
 	// удалять соответственно тоже не от куда
-	removeFromParent()
-	{
+	removeFromParent() {
 		return this;
 	}
 
-	onBeforeAdd()
-	{
+	onBeforeAdd() {
 		super.onBeforeAdd();
 		this.idParticle = this.stack.getFreeIndex();
 		if (this.idParticle == -1)
@@ -40,48 +36,41 @@ export class ParticleItem extends Entity{
 		this.setVisible(this.visible);
 	}
 
-	onBeforeRemove()
-	{
+	onBeforeRemove() {
 		super.onBeforeRemove();
 		this.setVisible(false);
 		this.stack.freeIndex(this.idParticle);
 		this.idParticle = -1;
 	}
-	
 
-	setPosition(pos:Vector2|Vector3)
-	{
+
+	setPosition(pos: Vector2 | Vector3) {
 		super.setPosition(pos);
 		this.stack.setIndexPosition(this.idParticle, pos);
 	}
 
-	setPositionXY(x:number,y:number)
-	{
-		super.setPositionXY(x,y);
-		this.stack.setIndexPosition(this.idParticle, new Vector2(x,y));
+	setPositionXY(x: number, y: number) {
+		super.setPositionXY(x, y);
+		this.stack.setIndexPosition(this.idParticle, new Vector2(x, y));
 	}
 
 
-	setVisible(val:boolean)
-	{
+	setVisible(val: boolean) {
 		super.setVisible(val);
 		this.stack.setIndexPosition(this.idParticle, val ? this.position : deepPosition);
 	}
 
-	setRotationDeg(angle:number)
-	{
+	setRotationDeg(angle: number) {
 		super.setRotationDeg(angle);
 		this.stack.setIndexRotation(this.idParticle, angle * Math.PI / 180);
 	}
 
-	setRotationRad(angle:number)
-	{
+	setRotationRad(angle: number) {
 		super.setRotationRad(angle);
 		this.stack.setIndexRotation(this.idParticle, angle);
 	}
 
-	makeInstance()
-	{
+	makeInstance() {
 		var copy = new ParticleItem(this.stack);
 		this.makeChildsInstance(copy);
 		return copy;

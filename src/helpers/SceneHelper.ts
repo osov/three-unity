@@ -9,7 +9,7 @@ import { GameObject } from "ecs-unity";
 export class SceneHelper extends BaseHelper {
     public static allMesh: GameObject[] = [];
 
-    public static addToScene(entity: Entity, nameParent: string = '') {
+    public static addToScene(entity: Entity, nameParent: string = '', pos: Vector3 = new Vector3(), angle = 0, isDynamic = true, id = -1) {
         var parent = null;
         if (nameParent != '') {
             if (nameParent == 'sceneOrtho')
@@ -20,7 +20,7 @@ export class SceneHelper extends BaseHelper {
                 console.warn("addToScene parent не найден:", nameParent);
         }
 
-        EntitysSystem.instance.addEntity(entity, entity.getPosition(), 0, false, parent);
+        return EntitysSystem.instance.addEntity(entity, pos, angle, isDynamic, parent, id);
     }
 
     public static addToUIScene(entity: Entity) {

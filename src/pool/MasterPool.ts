@@ -6,7 +6,7 @@ import { deepPosition } from "../utils/gameUtils";
 
 
 export class MasterPool extends BaseSystem {
-    public static instance:MasterPool;
+    public static instance: MasterPool;
     private manager: PoolsManager;
     public static isCloneMaterial = false;
 
@@ -16,18 +16,15 @@ export class MasterPool extends BaseSystem {
         this.manager = new PoolsManager();
     }
 
-    public static setMaterialClone(val:boolean)
-    {
+    public static setMaterialClone(val: boolean) {
         this.isCloneMaterial = val;
     }
 
-    public static registerParticlesPool(name:string, material:PointsMaterial, maxCount:number)
-	{
+    public static registerParticlesPool(name: string, material: PointsMaterial, maxCount: number) {
         return MasterPool.instance.manager.registerParticlesPool(name, material, maxCount);
     }
 
-    public static registerObjectsPool(name:string, entity:Entity)
-	{
+    public static registerObjectsPool(name: string, entity: Entity) {
         entity.prefabName = name;
         entity.setPositionXY(deepPosition.x, deepPosition.y);
         entity.updateMatrixWorld();
@@ -40,6 +37,7 @@ export class MasterPool extends BaseSystem {
 
     public static GetObjectAtTime(name: string, timeMs = 5000): Entity {
         // todo
+        console.log("T");
         return this.GetObject(name);
     }
 
@@ -47,13 +45,11 @@ export class MasterPool extends BaseSystem {
         MasterPool.instance.manager.putPoolItem(go);
     }
 
-    public static GetEntity(name:string)
-    {
+    public static GetEntity(name: string) {
         return MasterPool.instance.manager.getPoolItem(name) as Entity;
     }
 
-    public static ReturnEntity(be:Entity)
-    {
+    public static ReturnEntity(be: Entity) {
         MasterPool.instance.manager.putPoolItem(be);
     }
 
@@ -62,8 +58,7 @@ export class MasterPool extends BaseSystem {
         return this.GetObject(name);
     }
 
-    public static Update(deltaTime:number)
-    {
+    public static Update(deltaTime: number) {
         MasterPool.instance.manager.update(deltaTime);
     }
 

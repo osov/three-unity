@@ -57,6 +57,7 @@ export class PoolsManager extends BaseSystem {
 
 	update(deltaTime: number) {
 		for (var k in this.particlesList) {
+			//	console.log(k)
 			this.particlesList[k].update(deltaTime);
 		}
 	}

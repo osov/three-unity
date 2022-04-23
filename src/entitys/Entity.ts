@@ -25,7 +25,7 @@ export class Entity extends BaseEntity {
 		this.copyProps(this, copy);
 	}
 
-	private copyProps(src: Entity, target: Entity) {
+	protected copyProps(src: Entity, target: Entity) {
 		target.position.copy(src.position);
 		target.scale.copy(src.scale);
 		target.userData = JSON.parse(JSON.stringify(src.userData)); //Object.assign не пашет видимо из-за глубины объекта
@@ -34,7 +34,7 @@ export class Entity extends BaseEntity {
 			for (var k in src.components) {
 				const cmp = src.components[k];
 				var c = new (cmp as any).constructor();
-				target.addComponent(c);
+				target.addComponent(c, k);
 			}
 		}
 	}

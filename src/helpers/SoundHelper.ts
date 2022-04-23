@@ -2,11 +2,10 @@ import { BaseHelper } from "./BaseHelper";
 import { AudioListener, Audio } from 'three';
 import { ResourceSystem } from "../systems/ResourceSystem";
 import { GameObject } from "ecs-unity";
-import { GameSystem } from "../systems/GameSystem";
 
 export class SoundHelper extends BaseHelper {
 
-    private static soundListener = new AudioListener();
+    private static soundListener: AudioListener;
     private static idSound = 0;
     private static soundsUnique: { [k: string]: Audio } = {};
     private static isInit = false;
@@ -16,10 +15,11 @@ export class SoundHelper extends BaseHelper {
         if (this.isInit)
             return;
         this.isInit = true;
-       // GameSystem.instance.scene.add(this.soundListener);
+        this.soundListener = new AudioListener();
+        // GameSystem.instance.scene.add(this.soundListener);
     }
 
-    private static getVolume(){
+    private static getVolume() {
         return 0.25;
     }
 
