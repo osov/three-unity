@@ -15,7 +15,7 @@ export class SelectorHelper extends BaseHelper {
 
 	private raycaster = new Raycaster();
 	private list: MonoBehaviour[] = [];
-	private monitoredEvents: {[id:number]:{ [k: string]: string[] }} = {};
+	private monitoredEvents: { [id: number]: { [k: string]: string[] } } = {};
 
 	init() {
 		EventBus.subscribeEvent<PointerEventData>('onPointerDown', this.onPointerDown.bind(this));
@@ -65,16 +65,16 @@ export class SelectorHelper extends BaseHelper {
 		this.onPointerUp(e);
 	}
 
-	private addMonitoredEvents(event: string, entity: BaseEntity, e:PointerEventData) {
+	private addMonitoredEvents(event: string, entity: BaseEntity, e: PointerEventData) {
 		if (!this.monitoredEvents[e.pointerId])
 			this.monitoredEvents[e.pointerId] = {};
 		if (!this.monitoredEvents[e.pointerId][event])
-		this.monitoredEvents[e.pointerId][event] = [];
+			this.monitoredEvents[e.pointerId][event] = [];
 		let eventName = EventBus.getEntityPrefixEvent(event, entity);
 		this.monitoredEvents[e.pointerId][event].push(eventName);
 	}
 
-	private dispathMonitoredEvents(event: string, e:PointerEventData) {
+	private dispathMonitoredEvents(event: string, e: PointerEventData) {
 		if (!this.monitoredEvents[e.pointerId] || !this.monitoredEvents[e.pointerId][event])
 			return;
 		let list = this.monitoredEvents[e.pointerId][event];
@@ -99,7 +99,7 @@ export class SelectorHelper extends BaseHelper {
 			if (res && res[0].object) {
 				let entity = res[0].object as BaseEntity;
 				let isMonitor = EventBus.dispatchEventEntity<PointerEventData>(typeEvent, entity, e);
-				if (isMonitor && typeEvent == 'onPointerDown'){
+				if (isMonitor && typeEvent == 'onPointerDown') {
 
 					this.addMonitoredEvents('onDrag', entity, e);
 					this.addMonitoredEvents('onPointerUp', entity, e);

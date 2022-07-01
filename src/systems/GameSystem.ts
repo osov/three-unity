@@ -38,7 +38,7 @@ export class GameSystem extends RenderSystem {
 		new MasterPool();
 		new SceneHelper().init();
 		new WrapHelper().init();
-		WrapHelper.drawDebugBorder(this.scene);
+		//	WrapHelper.drawDebugBorder(this.scene);
 	}
 
 	start() {
